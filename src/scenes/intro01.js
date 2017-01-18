@@ -39,26 +39,28 @@ map.setMap(
 
 map.setScroll(0, 0);
 
-let dt = 0.0;
-const update = () => {
-    let scroll = {
-        x: 0,
-        y: 0,
+const computeScrolling = (characterX, characterY) => {
+    let scrollX = 0;
+    let scrollY = 0;
+    
+    scrollX = 640 / 2 - character.x;
+    scrollY = 360 / 2 - character.y;
+    
+    return {
+        x: scrollX,
+        y: scrollY
     };
+}
 
-    scroll.x = 640 / 2 - character.x;
-    //scroll.y = 360 / 2 - character.y;
-
+const update = () => {
+    let scroll = computeScrolling();
     map.setScroll(scroll.x, scroll.y);
     character.update(scroll);
-
-    dt += 1.0 / 60.0;
 }
 
 // Rendering loop
 const animate = () => {
     requestAnimationFrame(animate);
-
     update();
     renderer.render(stage);
 }
