@@ -114,7 +114,7 @@ export default class Character {
             this.vy = 0;
             this.isOnTheFloor = true;
 
-            // Stick the character on the collision point (a bit hacky)
+            // Snap the character on the ground (a bit hacky)
             this.y = Math.floor(this.y / 32) * 32 + this.h + 2;
         } else {
             this.isOnTheFloor = false;
