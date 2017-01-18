@@ -3,7 +3,6 @@ import Character  from '../lib/Character';
 import SceneGraph from '../SceneGraph';
 
 const stage    = SceneGraph.stage;
-const renderer = SceneGraph.renderer;
 
 const mapW = Math.ceil((640 + 640 / 2) / 32);
 const mapH = Math.ceil((360 + 360 / 2) / 32);
@@ -58,11 +57,5 @@ const update = () => {
     character.update(scroll);
 }
 
-// Rendering loop
-const animate = () => {
-    requestAnimationFrame(animate);
-    update();
-    renderer.render(stage);
-}
 
-animate();
+export default update;
