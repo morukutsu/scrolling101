@@ -8,11 +8,6 @@ var stage = new PIXI.Container();
 var renderer = PIXI.autoDetectRenderer(640, 360, { backgroundColor : 0x64B1BC });
 document.body.appendChild(renderer.view);
 
-// Rendering loop
-animate();
-function animate() {
-    requestAnimationFrame(animate);
-    renderer.render(stage);
-}
+PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
 
-export default stage;
+export default { renderer, stage };

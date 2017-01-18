@@ -2,11 +2,14 @@ import 'pixi.js/dist/pixi.js';
 const PIXI = global.PIXI;
 
 import SceneGraph from '../SceneGraph';
-const stage = SceneGraph;
+const stage = SceneGraph.stage;
 
 export default class Map {
     constructor(tilesetPath, width, height, tileW, tileH, mapW, mapH, emptyTile) {
         this.tiles = [];
+        this.tileW = tileW;
+        this.tileH = tileH;
+        this.emptyTileId = emptyTile;
         this.baseTexture = PIXI.BaseTexture.fromImage(tilesetPath);
 
         // Construct array of all tiles
@@ -42,6 +45,7 @@ export default class Map {
         }
 
         stage.addChild(this.container);
+
     }
 
     setMap(map) {
@@ -53,10 +57,30 @@ export default class Map {
                 this.map[i][j].texture = this.tiles[map[j][i]];
             }
         }
+
+        this.logicMap = map;
+        this.mapW = mapW;
+        this.mapH = mapH;
     }
 
     setScroll(x, y) {
         this.container.position.x = x;
         this.container.position.y = y;
+    }
+
+    isCollisionWithMapGround(character) {
+        const tx = Math.floor(character.x / this.tileW);
+        const ty = Math.floor((character.y + character.h) / this.tileH);
+
+        if (ty >= 0 && ty < this.mapH && tx >= 0 && tx <= this.mapW) {
+            const tile = this.logicMap[ty][tx];
+
+            // Enough for floor collision
+            if (tile !== this.emptyTileId) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
