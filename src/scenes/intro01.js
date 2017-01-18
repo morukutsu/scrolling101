@@ -41,8 +41,16 @@ map.setScroll(0, 0);
 
 let dt = 0.0;
 const update = () => {
-    //map.setScroll(Math.sin(dt) * 100, 0);
-    character.update();
+    let scroll = {
+        x: 0,
+        y: 0,
+    };
+
+    scroll.x = 640 / 2 - character.x;
+    //scroll.y = 360 / 2 - character.y;
+
+    map.setScroll(scroll.x, scroll.y);
+    character.update(scroll);
 
     dt += 1.0 / 60.0;
 }

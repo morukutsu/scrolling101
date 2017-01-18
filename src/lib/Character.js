@@ -73,7 +73,7 @@ export default class Character {
         }, false);
     }
 
-    update() {
+    update(scroll) {
         const GRAVITY = 1;
         const MAX_VY  = 10;
         const MAX_VX  = 8;
@@ -136,6 +136,6 @@ export default class Character {
             this.sprite.animationSpeed = 0.01;
         }
 
-        this.sprite.position.set(this.x, this.y);
+        this.sprite.position.set(this.x + scroll.x, this.y + scroll.y);
     }
 }
