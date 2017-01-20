@@ -28,9 +28,9 @@ map.setMap(
         [1, 9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  17, e, e, e, e, e, e, e, e, e, e],
         [2, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 18, e, e, e, e, e, e, e, e, e, e],
         [2, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 18, e, e, e, e, e, e, e, e, e, e],
-        [e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e],
-        [e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e],
-        [e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e],
+        [2, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 18, e, e, e, e, e, e, e, e, e, e],
+        [2, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 18, e, e, e, e, e, e, e, e, e, e],
+        [2, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 18, e, e, e, e, e, e, e, e, e, e],
         [e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e],
         [e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e],
     ]
@@ -38,24 +38,21 @@ map.setMap(
 
 map.setScroll(0, 0);
 
-const computeScrolling = (characterX, characterY) => {
-    let scrollX = 0;
-    let scrollY = 0;
-    
-    scrollX = 640 / 2 - character.x;
-    scrollY = 360 / 2 - character.y;
-    
-    return {
-        x: scrollX,
-        y: scrollY
-    };
-}
-
-const update = () => {
-    let scroll = computeScrolling();
+const update = (computeScrolling) => {
+    let scroll = computeScrolling(character.x, character.y);
     map.setScroll(scroll.x, scroll.y);
     character.update(scroll);
 }
 
+const scrollingFunctions = [
+    (characterX, characterY) => {
+        return { x: 0, y: 0 };
+    },
 
-export default update;
+    (characterX, characterY) => {
+        return { x: 100, y: 0 };
+    },
+];
+
+
+export default { update, scrollingFunctions };
