@@ -2,14 +2,15 @@
 
 ## Welcome!
 This is a guide that anyone could use to learn about scrolling in 2D games.
-It is meant to be a resource with ready-to-use code examples (in JavaScript).
+It contains a rich amount of code examples that you can adapt to your own games.
 
 Oh, and every example can be tested right here, in the browser game on the left!
 The controls are very simple: press **Left** and **Right** to move, **Up** to jump!
 
 ## 1. Fixed screen
-In a plateformer game, the player can move everywhere on the screen.
-Sometimes, the whole level fits into a single screen (like in Bubble Bobble). In this case, there is no scrolling involved.
+In a plateformer game the player can move everywhere on the screen. When the world is larger than the screen, it is necessary for the camera to follow the player.
+
+However, sometimes the whole level fits into a single screen (like in Bubble Bobble). In this case, there is no scrolling involved.
 
 This introduces the "Fixed screen" type of scrolling.
 
@@ -23,8 +24,6 @@ const computeScrolling = (characterX, characterY) => {
 ```
 
 [0](play)
-
-*press the Play button to run this example*
 
 The computeScrolling(characterX, characterY) function takes two inputs: the character X coordinate (horizontal) and Y coordinate (vertical).
 The output is a point describing the scrolling offset.
