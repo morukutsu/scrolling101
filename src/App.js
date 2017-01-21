@@ -19,10 +19,13 @@ import js from 'highlight.js/lib/languages/javascript';
 import 'highlight.js/styles/monokai.css';
 
 const styles = {
+    outerContainer: {
+        textAlign: 'center',
+    },
+
     container: {
-        padding: 10,
-        display: 'flex',
-        flexDirection: 'row'
+        flexDirection: 'row',
+        display: 'inline-block',
     },
 
     gameArea: {
@@ -35,14 +38,17 @@ const styles = {
     },
 
     game: {
-
+        position: 'fixed',
+        minHeight: 0,
     },
 
     article: {
         paddingTop: 32,
-        paddingLeft: 32,
+        paddingLeft: 680,
         color: '#333',
         width: 770,
+        minHeight: 0,
+        textAlign: 'left',
     },
 
     play: {
@@ -107,25 +113,27 @@ class App extends Component {
         const mdString = parseDataUri(pageContent).data.toString();
 
         return (
-            <div style={styles.container}>
-                <div style={styles.game}>
-                    <h1 style={styles.title}>Scrolling 101: 2D scrolling course</h1>
-                    <div id="gameArea" style={styles.gameArea}/>
-                </div>
+            <div style={styles.outerContainer}>
+                <div style={styles.container}>
+                    <div style={styles.game}>
+                        <h1 style={styles.title}>Scrolling 101: 2D scrolling course</h1>
+                        <div id="gameArea" style={styles.gameArea}/>
+                    </div>
 
-                <div style={styles.article}>
-                    {
-                        remark().use(reactRenderer, {
-                            sanitize: false,
-                            remarkReactComponents: {
-                                code: RemarkLowlight({
-                                    js
-                                }),
+                    <div style={styles.article}>
+                        {
+                            remark().use(reactRenderer, {
+                                sanitize: false,
+                                remarkReactComponents: {
+                                    code: RemarkLowlight({
+                                        js
+                                    }),
 
-                                a: Link
-                            }
-                        }).process(mdString).contents
-                    }
+                                    a: Link
+                                }
+                            }).process(mdString).contents
+                        }
+                    </div>
                 </div>
             </div>
         );

@@ -60,6 +60,8 @@ export default class Character {
             } else if (event.keyCode === 38) {
                 this.isUpPressed = true;
             }
+
+            event.preventDefault();
         }, false);
 
         document.addEventListener('keyup', (event) => {
@@ -70,6 +72,8 @@ export default class Character {
             } else if (event.keyCode === 38) {
                 this.isUpPressed = false;
             }
+
+            event.preventDefault();
         }, false);
     }
 
@@ -124,7 +128,7 @@ export default class Character {
         this.y += this.vy;
 
         // Display
-        if (this.vx > 0) {
+        if (this.vx >= 0) {
             this.sprite.scale.x = 2;
         } else {
             this.sprite.scale.x = -2;

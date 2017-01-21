@@ -10,3 +10,9 @@ canvas {
     overflow: hidden;
     z-index: 5;
 }
+
+p, ul, li {
+    font-size: 22px;
+    line-height: 37.4px;
+    word-wrap: break-word;
+}
