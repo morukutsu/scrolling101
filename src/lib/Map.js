@@ -83,4 +83,20 @@ export default class Map {
 
         return false;
     }
+
+    isCollisionWithMapWall(character) {
+        const tx = Math.floor((character.x + character.vx) / this.tileW);
+        const ty = Math.floor(character.y / this.tileH);
+
+        if (ty >= 0 && ty < this.mapH && tx >= 0 && tx <= this.mapW) {
+            const tile = this.logicMap[ty][tx];
+
+            // Enough for floor collision
+            if (tile !== this.emptyTileId) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

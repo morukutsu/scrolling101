@@ -40,8 +40,8 @@ export default class Character {
         stage.addChild(this.sprite);
 
         // World
-        this.x = 40;
-        this.y = 40;
+        this.x = 100;
+        this.y = 100;
         this.vx = 0;
         this.vy = 0;
         this.w = 20;
@@ -124,18 +124,30 @@ export default class Character {
             this.isOnTheFloor = false;
         }
 
+        if (this.map.isCollisionWithMapWall(this)) {
+            this.vx = 0;
+        }
+
+        // Out of bounds
+        if (this.x < (-scroll.x - 32) || this.x > (640 - scroll.x + 32) || this.y > 450) {
+            this.x = 100;
+            this.y = 100;
+            this.vx = 0;
+            this.vy = 0;
+        }
+
         this.x += this.vx;
         this.y += this.vy;
 
         // Display
-        if (this.vx >= 0) {
-            this.sprite.scale.x = 2;
-        } else {
-            this.sprite.scale.x = -2;
-        }
-
         if (Math.abs(this.vx) > 0.1) {
             this.sprite.animationSpeed = 0.15;
+
+            if (this.vx >= 0) {
+                this.sprite.scale.x = 2;
+            } else {
+                this.sprite.scale.x = -2;
+            }
         } else {
             this.sprite.animationSpeed = 0.01;
         }
