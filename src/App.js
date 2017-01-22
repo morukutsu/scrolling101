@@ -2,11 +2,7 @@ import React, { Component } from 'react';
 import remark from 'remark';
 import reactRenderer from 'remark-react';
 
-import intro01 from './scenes/intro01.js';
-const update = intro01.update;
-const scrollingFunctions = intro01.scrollingFunctions;
-
-import pageContent from './scenes/intro01.md';
+import content from './Content.js';
 
 import SceneGraph from './SceneGraph';
 const createRenderer = SceneGraph.createRenderer;
@@ -17,6 +13,20 @@ import parseDataUri from 'parse-data-uri';
 import RemarkLowlight from 'remark-react-lowlight';
 import js from 'highlight.js/lib/languages/javascript';
 import 'highlight.js/styles/monokai.css';
+
+// Create Character and Map
+import Map        from './lib/Map';
+import Character  from './lib/Character';
+const mapW = Math.ceil((640 + 640 / 2) / 32);
+const mapH = Math.ceil((360 + 360 / 2) / 32);
+
+const EMPTY_TILE = 40;
+const map = new Map('assets/art_tileset.png', 256, 256, 32, 32, mapW, mapH, EMPTY_TILE);
+const character = new Character(map);
+
+// Routing
+import LocationBar from 'location-bar';
+const locationBar = new LocationBar();
 
 const styles = {
     outerContainer: {
@@ -56,23 +66,15 @@ const styles = {
     }
 };
 
-/*let computeScrolling = (characterX, characterY) => {
-    let scrollX = 0;
-    let scrollY = 0;
+const MD_CONTENT_ID = 0;
+const JS_CONTENT_ID = 1;
 
-    //scrollX = 640 / 2 - character.x;
-    //scrollY = 360 / 2 - character.y;
-
-    return {
-        x: scrollX,
-        y: scrollY
-    };
-}*/
-
-let computeScrolling;
+let globalComputeScrolling;
+let globalCurrentPage = 0;
 
 const playCode = (i) => {
-    computeScrolling = scrollingFunctions[i];
+    const scrollingFunctions = content[globalCurrentPage][JS_CONTENT_ID].scrollingFunctions;
+    globalComputeScrolling = scrollingFunctions[i];
 }
 
 // Hack to create react components from markdown
@@ -94,23 +96,73 @@ const Link = (props) => {
 }
 
 class App extends Component {
+    constructor() {
+        super();
+
+        this.state = {
+            currentPage: 0
+        }
+    }
+
+    componentWillMount() {
+        locationBar.onChange((path) => this.manageUrl(path));
+
+        locationBar.start({
+            pushState: true
+        });
+    }
+
     componentDidMount() {
         this.renderer = createRenderer();
+
+        const mapData = content[this.state.currentPage][JS_CONTENT_ID].map;
+        map.setMap(mapData);
 
         playCode(0);
 
         // Rendering loop
         const animate = () => {
             requestAnimationFrame(animate);
-            update(computeScrolling);
+            this.gameUpdate();
             this.renderer.render(stage);
         }
 
         animate();
     }
 
+    manageUrl(path) {
+        const matchs = path.match(/^(\d+)-/);
+        if (matchs) {
+            const id = parseInt(matchs[1], 10);
+            globalCurrentPage = id;
+        } else {
+            // Index
+            globalCurrentPage = 0;
+        }
+
+        const mapData = content[globalCurrentPage][JS_CONTENT_ID].map;
+        map.setMap(mapData);
+
+        playCode(0);
+
+        this.setState({
+            currentPage: globalCurrentPage
+        });
+    }
+
+    gameUpdate() {
+        const update = content[this.state.currentPage][JS_CONTENT_ID].update;
+        update(character, map, globalComputeScrolling);
+    }
+
+    changePage(id) {
+        locationBar.update(id + "-", {
+            trigger: true
+        });
+    }
+
     render() {
-        const mdString = parseDataUri(pageContent).data.toString();
+        const mdString = parseDataUri(content[this.state.currentPage][MD_CONTENT_ID]).data.toString();
 
         return (
             <div style={styles.outerContainer}>
@@ -133,6 +185,8 @@ class App extends Component {
                                 }
                             }).process(mdString).contents
                         }
+
+                        <a onClick={() => this.changePage(this.state.currentPage + 1)}>Next page</a>
                     </div>
                 </div>
             </div>
