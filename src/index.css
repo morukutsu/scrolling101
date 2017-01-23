@@ -11,7 +11,7 @@ canvas {
     z-index: 5;
 }
 
-p, ul, li {
+p, ul, li, a {
     font-size: 22px;
     line-height: 37.4px;
     word-wrap: break-word;

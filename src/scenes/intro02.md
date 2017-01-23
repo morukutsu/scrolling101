@@ -1,3 +1,3 @@
-# Part II: Horizontal and Vertical scrolling
+# Horizontal and Vertical scrolling
 
 ## AAAA

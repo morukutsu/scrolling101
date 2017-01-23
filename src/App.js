@@ -63,11 +63,16 @@ const styles = {
 
     play: {
         cursor: "pointer"
+    },
+
+    next: {
+        cursor: "pointer",
     }
 };
 
 const MD_CONTENT_ID = 0;
 const JS_CONTENT_ID = 1;
+const TITLE_CONTENT_ID = 2;
 
 let globalComputeScrolling;
 let globalCurrentPage = 0;
@@ -134,7 +139,9 @@ class App extends Component {
         const matchs = path.match(/^(\d+)-/);
         if (matchs) {
             const id = parseInt(matchs[1], 10);
-            globalCurrentPage = id;
+            if (id < content.length) {
+                globalCurrentPage = id;
+            }
         } else {
             // Index
             globalCurrentPage = 0;
@@ -156,9 +163,16 @@ class App extends Component {
     }
 
     changePage(id) {
-        locationBar.update(id + "-", {
-            trigger: true
-        });
+        if (id < content.length) {
+            const title = content[id][TITLE_CONTENT_ID].replace(/\s/g, '-');
+            locationBar.update(id + "-" + title, {
+                trigger: true
+            });
+        } else {
+            locationBar.update("/", {
+                trigger: true
+            });
+        }
     }
 
     render() {
@@ -186,7 +200,12 @@ class App extends Component {
                             }).process(mdString).contents
                         }
 
-                        <a onClick={() => this.changePage(this.state.currentPage + 1)}>Next page</a>
+                        <a
+                            style={styles.next}
+                            onClick={() => this.changePage(this.state.currentPage + 1)}
+                        >
+                            Next
+                        </a>
                     </div>
                 </div>
             </div>

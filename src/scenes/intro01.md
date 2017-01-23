@@ -1,4 +1,4 @@
-# Part I: Basics
+# Basics
 
 ## Welcome!
 This is a guide that anyone could use to learn about scrolling in 2D games.
