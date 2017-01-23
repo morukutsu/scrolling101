@@ -29,41 +29,25 @@ const update = (character, map, computeScrolling) => {
     character.update(scroll);
 }
 
-/*let computeScrolling = (characterX, characterY) => {
-    let scrollX = 0;
-    let scrollY = 0;
-
-    //scrollX = 640 / 2 - character.x;
-    //scrollY = 360 / 2 - character.y;
-
-    return {
-        x: scrollX,
-        y: scrollY
-    };
-}*/
-
 const scrollingFunctions = [
     (characterX, characterY) => {
-        let scrollX = 0;
-        let scrollY = 0;
-
-        scrollX = 640 / 2 - characterX;
-
         return {
-            x: scrollX,
-            y: scrollY
+            x: 640 / 2 - characterX,
+            y: 0,
         };
     },
 
     (characterX, characterY) => {
-        let scrollX = 0;
-        let scrollY = 0;
-
-        scrollY = 360 / 2 - characterY;
-
         return {
-            x: scrollX,
-            y: scrollY
+            x: 0,
+            y: 360 / 2 - characterY,
+        };
+    },
+
+    (characterX, characterY) => {
+        return {
+            x: 640 / 2 - characterX,
+            y: 360 / 2 - characterY,
         };
     },
 ];
