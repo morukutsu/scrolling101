@@ -69,7 +69,7 @@ export default class Map {
     }
 
     isCollisionWithMapGround(character) {
-        const tx = Math.floor(character.x / this.tileW);
+        const tx = Math.floor((character.x + character.vx) / this.tileW);
         const ty = Math.floor((character.y + character.h + character.vy) / this.tileH);
 
         if (ty >= 0 && ty < this.mapH && tx >= 0 && tx <= this.mapW) {
@@ -86,7 +86,7 @@ export default class Map {
 
     isCollisionWithMapWall(character) {
         const tx = Math.floor((character.x + character.vx) / this.tileW);
-        const ty = Math.floor(character.y / this.tileH);
+        const ty = Math.floor((character.y + character.vy) / this.tileH);
 
         if (ty >= 0 && ty < this.mapH && tx >= 0 && tx <= this.mapW) {
             const tile = this.logicMap[ty][tx];

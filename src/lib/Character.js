@@ -114,7 +114,7 @@ export default class Character {
             this.vy = MAX_VY;
         }
 
-        if (this.map.isCollisionWithMapGround(this)) {
+        if (this.vy > 0 && this.map.isCollisionWithMapGround(this)) {
             this.vy = 0;
             this.isOnTheFloor = true;
 
