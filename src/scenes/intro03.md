@@ -2,35 +2,35 @@
 
 ## 1. What are the dead zones?
 A dead zone is a small area around the screen position of the character.
-When the character is inside this area, the scrolling will be fixed.
-The moment the character moves outside the dead zone, the camera will quickly catch-up and follow the character.
+When the character stays within this area, the scrolling will be fixed.
+When outside the dead zone, the camera will quickly catch-up and follow the character.
 
-The dead zone is useful to limit the camera movements and reduce noise.
-In some platforming sections, the player may be focused on some elements very close to the player.
-In these situations, the player doesn't need to see new parts of the map at the left or right of the screen.
+A dead zone is an useful tool to limit camera movements.
+In many situations, the player is focused on the elements very close to the character sprite.
+The player does not necessarily need to see new parts of the map at the sides of the screen.
 
 ## 2. Theory
 
 ### a. State machine
-From the explanation above, you can guess the implementation is more complex than the previous examples.
-The scrolling function has two states:
-- Dead zone: when the character is within the dead zone bounds
-- Catch-up: the character went outside the dead zone and the camera must follow the player
+You can guess the implementation is more complex than the previous examples.
+The scrolling function can be broken down in two states:
+- **Dead zone state**: the character is inside the dead zone (initial state)
+- **Catch-up state**: the character went outside the dead zone and the camera must start following the player
 
 ### b. Dead Zone
-When inside the dead zone (the initial state), the scrolling is fixed and We must detect when the character leaves the dead zone.
-It is easier to think about the problem using screen coordinates: if the sprite goes too much to the left or the to the right, it's time for the camera to scroll.
-When transitioning from the Dead Zone state to the Catch-Up state, the scrolling will be a bit off center. The next state job is to follow the character using our standard scrolling function and to slowly reduce the "off center offset", catching up the character position.
+Inside the dead zone, the scrolling is fixed and the function must detect when the character is leaving the dead zone.
+It is easier to think about the problem using screen coordinates: if the sprite goes too far from the screen center, the camera will start following the player.
+When transitioning from the **dead zone state** to the **catch-up state**, the scrolling will be a bit off center. The next state job is to follow the character using our standard scrolling function and to slowly reduce the "off center offset", catching up the character position.
 
 ### c. Catch-Up
-Catching up is analogous to a camera man trying to follow someone who starts running: at first the person will not be a the center of the screen.
-But when the camera man managed to accommodate for the speed of the person, he will follow him perfectly.
+Catching up is analogous to a camera man trying to follow someone who starts running: at first the person will not appear really centered.
+But when the camera man manages to accommodate for the speed of the runner, he will follow him perfectly.
 
-This function computes the scrolling position and reduces the off center offset by a constant amount every frame until it is zero.
+This function computes the scrolling position and reduces the off center offset by a constant amount every frame until it reaches zero.
 When the character stops moving, the state machine goes back to the dead zone state.
 
 ## 3. The code
-Here is an implementation for an horizontal dead zone:
+Here is an implementation of a horizontal dead zone:
 
 ```js
 const STATE_DEAD_ZONE   = 0;
@@ -46,7 +46,7 @@ let scrollX, offset, oldCharacterX, direction;
 
 const computeScrolling = (characterX, characterY) => {
     if (!isInit) {
-        // Init part runing only once
+        // Initialization part running only once
         scrollX       = MIDDLE - characterX; // Set character at the middle of the screen
 
         oldCharacterX = characterX;
@@ -98,3 +98,7 @@ const computeScrolling = (characterX, characterY) => {
 ```
 
 [0](play)
+
+The vertical version is similar, just replacing X with Y and setting MIDDLE to SCREEN_HEIGHT / 2:
+
+[1](play)

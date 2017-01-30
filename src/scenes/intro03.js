@@ -32,13 +32,17 @@ const update = (character, map, computeScrolling) => {
 const STATE_DEAD_ZONE   = 0;
 const STATE_CATCHING_UP = 1;
 
-const MIDDLE           = 640 / 2;
-const DEAD_ZONE_OFFSET = 100;
-const RESOLUTION_SPEED = 5;
+const MIDDLE            = 640 / 2;
+const MIDDLEY           = 360 / 2;
+const DEAD_ZONE_OFFSET  = 100;
+const DEAD_ZONE_OFFSETV = 100;
+const RESOLUTION_SPEED  = 5;
 
 let isInit = false;
+let isInitV = false;
 let scrollingState = STATE_DEAD_ZONE;
 let scrollX, offset, oldCharacterX, direction;
+let scrollY, oldCharacterY;
 
 const scrollingFunctions = [
     (characterX, characterY) => {
@@ -94,9 +98,54 @@ const scrollingFunctions = [
     },
 
     (characterX, characterY) => {
+        if (!isInitV) {
+            // Init part runing only once
+            scrollY       = MIDDLEY - characterY; // Set character at the middle of the screen
+
+            oldCharacterY = characterY;
+            isInitV       = true;
+        }
+
+        // State machine
+        if (scrollingState === STATE_DEAD_ZONE) {
+            let screenY = characterY + scrollY;
+
+            // After a certain threshold the scrolling must start
+            if (screenY > MIDDLEY + DEAD_ZONE_OFFSETV ||
+                screenY < MIDDLEY - DEAD_ZONE_OFFSETV )
+            {
+                // Change the state machine state
+                scrollingState = STATE_CATCHING_UP;
+
+                direction      = Math.sign(screenY - MIDDLEY);
+                offset         = DEAD_ZONE_OFFSETV;
+            }
+        } else {
+            // Set the character at the middle of the screen
+            // but offset by some pixels on the left or on the right
+            scrollY = MIDDLEY - characterY + (offset * direction);
+
+            if (offset > 0) {
+                // Reducing the offset every frame will slowly
+                // center the character on the screen
+                offset -= RESOLUTION_SPEED;
+            }
+
+            // When the character is moving very slowly we consider he stopped
+            const isMoving = Math.abs(oldCharacterY - characterY) >= 0.1;
+
+            if (!isMoving) {
+                // Go back to the initial dead zone state
+                scrollingState = STATE_DEAD_ZONE;
+            }
+
+            // Save current character position for the next frame
+            oldCharacterY = characterY;
+        }
+
         return {
             x: 0,
-            y: 360 / 2 - characterY,
+            y: scrollY,
         };
     },
 

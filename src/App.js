@@ -155,6 +155,8 @@ class App extends Component {
         this.setState({
             currentPage: globalCurrentPage
         });
+
+        window.scrollTo(0, 0);
     }
 
     gameUpdate() {
@@ -182,7 +184,7 @@ class App extends Component {
             <div style={styles.outerContainer}>
                 <div style={styles.container}>
                     <div style={styles.game}>
-                        <h1 style={styles.title}>Scrolling 101: 2D scrolling course</h1>
+                        <h1 style={styles.title}>Scrolling 101: 2D scrolling explained</h1>
                         <div id="gameArea" style={styles.gameArea}/>
                     </div>
 
