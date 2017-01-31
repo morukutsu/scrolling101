@@ -7,10 +7,14 @@ import intro02js from './scenes/intro02.js';
 import intro03md from './scenes/intro03.md';
 import intro03js from './scenes/intro03.js';
 
+import intro04md from './scenes/intro04.md';
+import intro04js from './scenes/intro04.js';
+
 const content = [
     [intro01md, intro01js, "basics"],
     [intro02md, intro02js, "horizontal and vertical scrolling"],
-    [intro03md, intro03js, "dead zones"],
+    [intro03md, intro03js, "dead zones part 1"],
+    [intro04md, intro04js, "dead zones part 2"],
 ];
 
 

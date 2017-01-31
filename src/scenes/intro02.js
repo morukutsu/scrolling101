@@ -52,5 +52,23 @@ const scrollingFunctions = [
     },
 ];
 
+const lines = [
+    {
+        lines: [
+            [640 / 2, 0, 640 / 2, 360],
+        ]
+    },
+    {
+        lines: [
+            [0, 360 / 2, 640, 360 / 2],
+        ]
+    },
+    {
+        lines: [
+            [640 / 2, 100,     640 / 2,   360 - 100],
+            [200,     360 / 2, 640 - 200, 360 / 2],
+        ]
+    },
+];
 
-export default { update, scrollingFunctions, map };
+export default { update, scrollingFunctions, map, lines };

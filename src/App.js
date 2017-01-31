@@ -7,6 +7,7 @@ import content from './Content.js';
 import SceneGraph from './SceneGraph';
 const createRenderer = SceneGraph.createRenderer;
 const stage = SceneGraph.stage;
+const PIXI = global.PIXI;
 
 import parseDataUri from 'parse-data-uri';
 
@@ -62,11 +63,14 @@ const styles = {
     },
 
     play: {
-        cursor: "pointer"
+        cursor: "pointer",
+        fontWeight: "bold"
     },
 
     next: {
         cursor: "pointer",
+        fontWeight: "bold",
+        marginRight: 10
     }
 };
 
@@ -76,10 +80,40 @@ const TITLE_CONTENT_ID = 2;
 
 let globalComputeScrolling;
 let globalCurrentPage = 0;
+let globalCodeId = 0;
+let linesGfx = null;
+
+const showLines = (enable) => {
+    if (linesGfx) {
+        stage.removeChild(linesGfx);
+    }
+
+    const lines = content[globalCurrentPage][JS_CONTENT_ID].lines;
+    if (lines) {
+        linesGfx = new PIXI.Graphics();
+
+        linesGfx.lineStyle(1, 0xFFFFFF, 1);
+
+        if (lines[globalCodeId]) {
+            for (let i = 0; i < lines[globalCodeId].lines.length; i++) {
+                const a = lines[globalCodeId].lines[i];
+
+                linesGfx.moveTo(a[0], a[1]);
+                linesGfx.lineTo(a[2], a[3]);
+            }
+
+            linesGfx.alpha = 0.5;
+            stage.addChild(linesGfx);
+        }
+    }
+}
 
 const playCode = (i) => {
     const scrollingFunctions = content[globalCurrentPage][JS_CONTENT_ID].scrollingFunctions;
     globalComputeScrolling = scrollingFunctions[i];
+    globalCodeId = i;
+
+    showLines(true);
 }
 
 // Hack to create react components from markdown
@@ -90,7 +124,7 @@ const Link = (props) => {
                 style={styles.play}
                 onClick={() => playCode(props.children[0])}
             >
-                Play
+                ► Play
             </a>
         );
     } else {
@@ -179,35 +213,53 @@ class App extends Component {
 
     render() {
         const mdString = parseDataUri(content[this.state.currentPage][MD_CONTENT_ID]).data.toString();
+        const mdContent = remark().use(reactRenderer, {
+            sanitize: false,
+            remarkReactComponents: {
+                code: RemarkLowlight({
+                    js
+                }),
+
+                a: Link
+            }
+        }).process(mdString).contents;
 
         return (
             <div style={styles.outerContainer}>
                 <div style={styles.container}>
                     <div style={styles.game}>
-                        <h1 style={styles.title}>Scrolling 101: 2D scrolling explained</h1>
+                        <h1 style={styles.title}>Scrolling 101: 2D scrolling workshop!</h1>
                         <div id="gameArea" style={styles.gameArea}/>
                     </div>
 
                     <div style={styles.article}>
                         {
-                            remark().use(reactRenderer, {
-                                sanitize: false,
-                                remarkReactComponents: {
-                                    code: RemarkLowlight({
-                                        js
-                                    }),
-
-                                    a: Link
-                                }
-                            }).process(mdString).contents
+                            mdContent
                         }
 
-                        <a
-                            style={styles.next}
-                            onClick={() => this.changePage(this.state.currentPage + 1)}
-                        >
-                            Next
-                        </a>
+                        {
+                            this.state.currentPage > 0 ?
+                            <a
+                                style={styles.next}
+                                onClick={() => this.changePage(this.state.currentPage - 1)}
+                            >
+                                Previous
+                            </a>
+                            :
+                            null
+                        }
+
+                        {
+                            this.state.currentPage < content.length - 1 ?
+                            <a
+                                style={styles.next}
+                                onClick={() => this.changePage(this.state.currentPage + 1)}
+                            >
+                                Next
+                            </a>
+                            :
+                            null
+                        }
                     </div>
                 </div>
             </div>

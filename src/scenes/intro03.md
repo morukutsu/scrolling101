@@ -1,4 +1,4 @@
-# Dead zones
+# Dead Zones Part I.
 
 ## 1. What are the dead zones?
 A dead zone is a small area around the screen position of the character.
@@ -102,3 +102,13 @@ const computeScrolling = (characterX, characterY) => {
 The vertical version is similar, just replacing X with Y and setting MIDDLE to SCREEN_HEIGHT / 2:
 
 [1](play)
+
+Horizontal and vertical:
+
+[2](play)
+
+Compare with the version not using dead zones:
+
+[3](play)
+
+Experiment with both versions, they feel different. Depending of your gameplay choices, you may like one or the other.

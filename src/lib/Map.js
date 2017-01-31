@@ -45,7 +45,6 @@ export default class Map {
         }
 
         stage.addChild(this.container);
-
     }
 
     setMap(map) {

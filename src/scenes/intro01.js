@@ -39,5 +39,4 @@ const scrollingFunctions = [
     },
 ];
 
-
 export default { update, scrollingFunctions, map };
