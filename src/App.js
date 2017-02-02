@@ -70,7 +70,7 @@ const styles = {
     next: {
         cursor: "pointer",
         fontWeight: "bold",
-        marginRight: 10
+        marginRight: 30,
     }
 };
 
@@ -233,9 +233,9 @@ class App extends Component {
                     </div>
 
                     <div style={styles.article}>
-                        {
-                            mdContent
-                        }
+                        <div key={Math.random()}>
+                            { mdContent }
+                        </div>
 
                         {
                             this.state.currentPage > 0 ?

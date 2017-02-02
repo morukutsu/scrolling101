@@ -82,7 +82,10 @@ const scrollFuncX = (characterX, characterY) => {
         // When the character is moving very slowly we consider he stopped
         const isMoving = Math.abs(oldCharacterX - characterX) >= 0.1;
 
-        if (!isMoving) {
+        // When the character goes back in the dead zone, resume dead zone state
+        const isChangedDirection = Math.sign(oldCharacterX - characterX) === directionX;
+
+        if (!isMoving || isChangedDirection) {
             // Go back to the initial dead zone state
             scrollingStateX = STATE_DEAD_ZONE;
         }
@@ -96,6 +99,7 @@ const scrollFuncX = (characterX, characterY) => {
         y: 0,
     };
 };
+
 const scrollFuncY = (characterX, characterY) => {
     if (!isInitY) {
         // Init part runing only once
@@ -133,7 +137,10 @@ const scrollFuncY = (characterX, characterY) => {
         // When the character is moving very slowly we consider he stopped
         const isMoving = Math.abs(oldCharacterY - characterY) >= 0.1;
 
-        if (!isMoving) {
+        // When the character goes back in the dead zone, resume dead zone state
+        const isChangedDirection = Math.sign(oldCharacterY - characterY) === directionY;
+
+        if (!isMoving || isChangedDirection) {
             // Go back to the initial dead zone state
             scrollingStateY = STATE_DEAD_ZONE;
         }

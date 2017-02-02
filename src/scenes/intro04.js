@@ -12,12 +12,12 @@ const map =
         [e, e,  e,  e,  e,  e,  e,  e,  e,  e,  e,  e,  e,  e,  e,  e,  1,  17,  e,  e,  e, e, e, e, e, e, e, e, e, e],
         [e, e,  e,  e,  e,  e,  e,  e,  e,  e,  e,  e,  e,  e,  e,  1,  9,  9,  17,  e,  e, e, e, e, e, e, e, e, e, e],
         [e, e,  e,  e,  e,  e,  e,  e,  e,  e,  e,  e,  e,  e,  1,  9,  9,  9,  9, 17,  e, e, e, e, e, e, e, e, e, e],
-        [1, 9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  17, e, e, e, e, e, e, e, e, e],
-        [2, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 18, e, e, e, e, e, e, e, e, e],
-        [2, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 18, e, e, e, e, e, e, e, e, e],
-        [2, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 18, e, e, e, e, e, e, e, e, e],
-        [2, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 18, e, e, e, e, e, e, e, e, e],
-        [2, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 18, e, e, e, e, e, e, e, e, e],
+        [1, 9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  17],
+        [2, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 18],
+        [2, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 18],
+        [2, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 18],
+        [2, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 18],
+        [2, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 18],
         [e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e],
         [e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e],
     ]
@@ -40,6 +40,7 @@ const RESOLUTION_SPEED  = 5;
 const INDEX_X = 0;
 const INDEX_Y = 1;
 
+// Each state variable is duplicated: one for the X scrolling function and one other for Y
 let isInit               = [false, false];
 let scroll               = [0, 0];
 let offset               = [0, 0];
@@ -77,7 +78,7 @@ const deadZoneScrollFunc = (position, index, middle, isCatchingUp, catchUpPositi
 
         if (isCatchingUp && offset[index] > catchUpPosition) {
             // Reducing the offset every frame will slowly
-            // center the character on the screen
+            // snap to the catchUpPosition
             offset[index] -= RESOLUTION_SPEED;
         }
 
@@ -100,6 +101,7 @@ const deadZoneScrollFunc = (position, index, middle, isCatchingUp, catchUpPositi
 }
 
 const scrollingFunctions = [
+    // Border snapping
     (characterX, characterY) => {
         return {
             x: deadZoneScrollFunc(characterX, INDEX_X, MIDDLE_X, false),
@@ -107,6 +109,7 @@ const scrollingFunctions = [
         };
     },
 
+    // Opposite border snapping
     (characterX, characterY) => {
         return {
             x: deadZoneScrollFunc(characterX, INDEX_X, MIDDLE_X, true, -DEAD_ZONE_OFFSET),

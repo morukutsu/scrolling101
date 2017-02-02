@@ -81,7 +81,10 @@ const computeScrolling = (characterX, characterY) => {
         // When the character is moving very slowly we consider he stopped
         const isMoving = Math.abs(oldCharacterX - characterX) >= 0.1;
 
-        if (!isMoving) {
+        // When the character goes back in the dead zone, resume dead zone state
+        const isChangedDirection = Math.sign(oldCharacterX - characterX) === directionX;
+
+        if (!isMoving ||isChangedDirection) {
             // Go back to the initial dead zone state
             scrollingState = STATE_DEAD_ZONE;
         }
@@ -111,4 +114,4 @@ Compare with the version not using dead zones:
 
 [3](play)
 
-Experiment with both versions, they feel different. Depending of your gameplay choices, you may like one or the other.
+Experiment with both versions to feel the difference. Depending of your gameplay choices, you may prefer one or the other.
