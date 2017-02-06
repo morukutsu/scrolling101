@@ -76,6 +76,10 @@ const styles = {
         height: 40,
         width: 150,
         display: 'inline-block'
+    },
+
+    linesLink: {
+        cursor: 'pointer'
     }
 };
 
@@ -87,6 +91,7 @@ let globalComputeScrolling;
 let globalCurrentPage = 0;
 let globalCodeId = 0;
 let linesGfx = null;
+let linesEnabled = true;
 
 const showLines = (enable) => {
     if (linesGfx) {
@@ -94,7 +99,7 @@ const showLines = (enable) => {
     }
 
     const lines = content[globalCurrentPage][JS_CONTENT_ID].lines;
-    if (lines) {
+    if (lines && enable) {
         linesGfx = new PIXI.Graphics();
 
         linesGfx.lineStyle(1, 0xFFFFFF, 1);
@@ -118,7 +123,9 @@ const playCode = (i) => {
     globalComputeScrolling = scrollingFunctions[i];
     globalCodeId = i;
 
-    showLines(true);
+    showLines(linesEnabled);
+
+    character.x = character.y = 100;
 }
 
 // Hack to create react components from markdown
@@ -235,6 +242,15 @@ class App extends Component {
                     <div style={styles.game}>
                         <h1 style={styles.title}>Scrolling 101: 2D scrolling workshop!</h1>
                         <div id="gameArea" style={styles.gameArea}/>
+
+                        <div style={{textAlign: 'left'}}>
+                            <a
+                                style={styles.linesLink}
+                                onClick={() => { linesEnabled = !linesEnabled, showLines(linesEnabled), this.setState({}) } }
+                            >
+                                Lines { linesEnabled ?  '☑' : '☐' }
+                            </a>
+                        </div>
                     </div>
 
                     <div style={styles.article}>

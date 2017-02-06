@@ -26,12 +26,12 @@ a {
 }
 
 a:hover {
-    font-size: 26px;
+    opacity: 0.5;
     transition: all 0.1s ease;
 }
 
 a:active {
-    font-size: 20px;
+    font-size: 24px;
     transition: all 0.05s ease;
 }
 
