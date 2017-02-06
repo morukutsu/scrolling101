@@ -1,18 +1,18 @@
-# Dead Zones Part I.
+# Dead Zones I.
 
 ## 1. What are the dead zones?
 A dead zone is a small area around the screen position of the character.
-When the character stays within this area, the scrolling will be fixed.
-When outside the dead zone, the camera will quickly catch-up and follow the character.
+When the character stays within this area, the scrolling is fixed.
+Outside of the dead zone, the camera will follow the character.
 
-A dead zone is an useful tool to limit camera movements.
-In many situations, the player is focused on the elements very close to the character sprite.
-The player does not necessarily need to see new parts of the map at the sides of the screen.
+A dead zone is a useful tool to prevent abrupt camera movements.
+In many situations, the player is focused on the elements very close to the character.
+The player does not necessarily want the camera to follow all his movements.
 
 ## 2. Theory
 
 ### a. State machine
-You can guess the implementation is more complex than the previous examples.
+Unfortunately, the implementation is more complex than the previous examples.
 The scrolling function can be broken down in two states:
 - **Dead zone state**: the character is inside the dead zone (initial state)
 - **Catch-up state**: the character went outside the dead zone and the camera must start following the player
@@ -23,14 +23,14 @@ It is easier to think about the problem using screen coordinates: if the sprite 
 When transitioning from the **dead zone state** to the **catch-up state**, the scrolling will be a bit off center. The next state job is to follow the character using our standard scrolling function and to slowly reduce the "off center offset", catching up the character position.
 
 ### c. Catch-Up
-Catching up is analogous to a camera man trying to follow someone who starts running: at first the person will not appear really centered.
-But when the camera man manages to accommodate for the speed of the runner, he will follow him perfectly.
+Catching up is analogous to a camera man trying to follow someone who starts running: at first the actor will be a bit off center.
+However, when the camera accommodates for the speed of the runner, he will appear centered.
 
 This function computes the scrolling position and reduces the off center offset by a constant amount every frame until it reaches zero.
 When the character stops moving, the state machine goes back to the dead zone state.
 
 ## 3. The code
-Here is an implementation of a horizontal dead zone:
+Here is an implementation of the horizontal scrolling with a 100 pixels dead zone:
 
 ```js
 const STATE_DEAD_ZONE   = 0;

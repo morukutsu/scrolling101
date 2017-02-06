@@ -1,19 +1,23 @@
 # Dead Zones Part II.
 
 ## 1. Border snapping
-During the catching up state, the scrolling function is always trying to center the camera on the character.
-Some games does not implement this part so the character is not centered on the screen during the scrolling.
-The sprite will snap to the border of the dead zone.
+During the second state, the scrolling function is always trying to center the character on the screen.
+But, what if we don't?
+The sprite will snap to the borders of the dead zone!
 
-This technique is useful to limit the camera movements. One drawback is that less map is visible in the direction the character is moving.
-It can be used in a situation in which the character is being chased by an enemy.
+This technique is also useful to limit camera movements.
+A drawback is that less map is visible in the character travel direction.
+For example, it can be used in a situation in which the character is being chased by an enemy.
 
 [0](play)
 
 ## 2. Opposite border snapping
-To fix the drawback of the previous Border Snapping algorithm, instead of centering on the middle of the screen, the scrolling function can center on the border at the opposite of the character. In this case, the player can see more map at front of the character.
+To fix the drawback of the previous Border Snapping algorithm, the scrolling function can snap to the border at the opposite of the character.
+In this case, the player should see more map towards the character moving direction.
 
-When using this algorithm, the camera can move a lot especially during direction changes. A lot of parameters can be adjusted to create a better effect. Reducing the dead zone size or using an easing function during the catch up phase are good ways of improvements.
+With this algorithm, the camera can move a lot especially during direction changes.
+A lot of parameters can be adjusted to create a better effect.
+Reducing the dead zone size or using an easing function during the catch up phase are improvement ideas.
 
 [1](play)
 

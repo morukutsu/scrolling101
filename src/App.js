@@ -64,13 +64,18 @@ const styles = {
 
     play: {
         cursor: "pointer",
-        fontWeight: "bold"
+        fontWeight: "bold",
+        height: 40,
+        display: 'block'
     },
 
     next: {
         cursor: "pointer",
         fontWeight: "bold",
         marginRight: 30,
+        height: 40,
+        width: 150,
+        display: 'inline-block'
     }
 };
 

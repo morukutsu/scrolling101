@@ -1,41 +1,42 @@
 # Horizontal and Vertical scrolling
 
 ## 1. Horizontal scrolling
-In some games, the map scrolls only in the horizontal direction. An example is Super Mario Bros. on the NES.
-This chapter covers a very simple implementation of the horizontal scrolling.
+In several old school games, the map scrolls only in a single direction. A famous example is Super Mario Bros.
+This chapter covers a very simple implementation of the horizontal scrolling. And will serve as a basis for our future improvements!
 
-Since our character can move left or right, it makes sense to display its sprite centered on the screen (horizontally).
-In the previous chapter, the formula used to display the screen coordinates of any sprite was the following: ```const screenX = worldX + scrollX```.
+Our character can move left or right and we would like to display the sprite centered horizontally on the screen.
+> Little reminder: In the previous chapter, the formula used to display the screen coordinates of any sprite was the following:
+```js
+const screenX = characterX + scrollX
+```
 
-To display the sprite at the middle, we just have to use a scrollX value of SCREEN_WIDTH / 2.
-When the character position is 0, screenX will be set to the middle of the screen.
+Using a ```scrollX``` value of ```SCREEN_WIDTH / 2```, when the character position ```characterX``` is 0, ```screenX``` will be set to the middle of the screen.
 
-But when the character moves, the camera must follow the character. To make the scrolling dependent of the character position, subtracting characterX from scrollX will do the trick. When the character moves right, the map position moves to left.
-
-See the full code below:
+But when the character moves, the camera must follow the character. The scrolling value is dependent of the character position.
+Subtracting ```characterX``` from ```scrollX``` will work. When the character moves right, the map position moves left.
 
 ```js
 const computeScrolling = (characterX, characterY) => {
     return {
-        x: 640 / 2 - characterX,
-        y: 0
+        x: 640 / 2 - characterX, // Set the scrolling at the middle of the screen
+        y: 0                     // and subtract the character position
     };
 }
 ```
 
 [0](play)
 
-Here is why the character stays centered on the screen while the map moves:
+It's easy to understand why the character is always centered:
 ```
     screenX = worldX + scrollX;                 // the world to screen position formula
     screenX = worldX + (640 / 2) - characterX;  // replace scrollX by the computeScrolling output
-                                                // characterX == worldX
+                                                // but characterX == worldX (true for the entity being "tracked")
     screenX = 640 / 2;                          // screenX is constant!
 ```
 
 
 ## 2. Vertical scrolling
-Same logic applies to vertical scrolling:
+The same logic is used for vertical scrolling:
 
 ```js
 const computeScrolling = (characterX, characterY) => {
@@ -59,4 +60,4 @@ const computeScrolling = (characterX, characterY) => {
 }
 ```
 
-[2](play)
+[2](play) (it's starting to look like a real game!)

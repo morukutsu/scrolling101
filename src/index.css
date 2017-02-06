@@ -16,3 +16,32 @@ p, ul, li, a {
     line-height: 37.4px;
     word-wrap: break-word;
 }
+
+code {
+    border-radius: 3px;
+}
+
+a {
+    user-select: none;
+}
+
+a:hover {
+    font-size: 26px;
+    transition: all 0.1s ease;
+}
+
+a:active {
+    font-size: 20px;
+    transition: all 0.05s ease;
+}
+
+blockquote {
+    background-color: #F0F0F0;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+blockquote p {
+    font-size: 20px;
+    line-height: 28px;
+}
