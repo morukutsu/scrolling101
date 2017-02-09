@@ -22,7 +22,7 @@ const mapW = Math.ceil((640 + 640 / 2) / 32);
 const mapH = Math.ceil((360 + 360 / 2) / 32);
 
 const EMPTY_TILE = 40;
-const map = new Map('assets/art_tileset.png', 256, 256, 32, 32, mapW, mapH, EMPTY_TILE);
+const map = new Map('/assets/art_tileset.png', 256, 256, 32, 32, mapW, mapH, EMPTY_TILE);
 const character = new Character(map);
 
 // Routing
@@ -182,7 +182,7 @@ class App extends Component {
     }
 
     manageUrl(path) {
-        const matchs = path.match(/^(\d+)-/);
+        const matchs = path.match(/^scrolling101\/(\d+)-/);
         if (matchs) {
             const id = parseInt(matchs[1], 10);
             if (id < content.length) {
@@ -213,7 +213,7 @@ class App extends Component {
     changePage(id) {
         if (id < content.length) {
             const title = content[id][TITLE_CONTENT_ID].replace(/\s/g, '-');
-            locationBar.update(id + "-" + title, {
+            locationBar.update("scrolling101/" + id + "-" + title, {
                 trigger: true
             });
         } else {
