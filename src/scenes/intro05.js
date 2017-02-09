@@ -47,12 +47,14 @@ const scrollingFunctions = [
         const targetY = 360 / 2 - characterY;
 
         if (!isInit) {
+            // Start with the camera centered on the character
             scrollX = targetX;
             scrollY = targetY;
 
             isInit = true;
         }
 
+        // Smoothly, scrollX will transition to targetX. Same for Y.
         scrollX = lerp(scrollX, targetX, 0.08);
         scrollY = lerp(scrollY, targetY, 0.08);
 
@@ -60,10 +62,23 @@ const scrollingFunctions = [
             x: scrollX,
             y: scrollY,
         };
-    }
+    },
+
+    (characterX, characterY) => {
+        return {
+            x: 640 / 2 - characterX,
+            y: 360 / 2 - characterY,
+        };
+    },
 ];
 
 const lines = [
+    {
+        lines: [
+            [640 / 2, 120,     640 / 2,   360 - 120],
+            [240,     360 / 2, 640 - 240, 360 / 2],
+        ]
+    },
     {
         lines: [
             [640 / 2, 120,     640 / 2,   360 - 120],

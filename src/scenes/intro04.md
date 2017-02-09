@@ -1,7 +1,7 @@
 # Dead Zones Part II.
 
 ## 1. Border snapping
-During the second state, the scrolling function is always trying to center the character on the screen.
+In the second state, the scrolling function is always trying to center the character on the screen.
 But, what if we don't?
 The sprite will snap to the borders of the dead zone!
 
