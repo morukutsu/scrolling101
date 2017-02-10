@@ -2,7 +2,7 @@
 
 ## 1. Horizontal scrolling
 In several old school games, the map scrolls only in a single direction. A famous example is Super Mario Bros.
-This chapter covers a very simple implementation of the horizontal scrolling. And will serve as a basis for our future improvements!
+This chapter covers a simple implementation of the horizontal scrolling. And will serve as a basis for our future improvements!
 
 Our character can move left or right and we would like to display the sprite centered horizontally on the screen.
 > Little reminder: In the previous chapter, the formula used to display the screen coordinates of any sprite was the following:
@@ -12,8 +12,8 @@ const screenX = characterX + scrollX
 
 Using a ```scrollX``` value of ```SCREEN_WIDTH / 2```, when the character position ```characterX``` is 0, ```screenX``` will be set to the middle of the screen.
 
-But when the character moves, the camera must follow the character. The scrolling value is dependent of the character position.
-Subtracting ```characterX``` from ```scrollX``` will work. When the character moves right, the map position moves left.
+But when the character moves, the camera must follow the character. So the scrolling value is dependent of the character position.
+Subtracting ```characterX``` from ```scrollX``` is a correct way to do that. When the character moves right the map moves left, creating an illusion of movement.
 
 ```js
 const computeScrolling = (characterX, characterY) => {
@@ -26,11 +26,11 @@ const computeScrolling = (characterX, characterY) => {
 
 [0](play)
 
-It's easy to understand why the character is always centered:
+To understand why the character stays centered, observe the explanation below:
 ```
-    screenX = worldX + scrollX;                 // the world to screen position formula
-    screenX = worldX + (640 / 2) - characterX;  // replace scrollX by the computeScrolling output
-                                                // but characterX == worldX (true for the entity being "tracked")
+    screenX = worldX + scrollX;                 // "world to screen" coordinates formula
+    screenX = worldX + (640 / 2) - characterX;  // Replace scrollX by the computeScrolling output
+                                                // But characterX == worldX (true for the entity being "tracked")
     screenX = 640 / 2;                          // screenX is constant!
 ```
 
@@ -50,7 +50,7 @@ const computeScrolling = (characterX, characterY) => {
 [1](play)
 
 ## 3. Horizontal & vertical scrolling
-And combined for vertical and horizontal scrolling:
+And combine both for vertical and horizontal scrolling:
 ```js
 const computeScrolling = (characterX, characterY) => {
     return {
