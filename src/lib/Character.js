@@ -8,7 +8,7 @@ export default class Character {
     constructor(map) {
         this.map = map;
         this.frames = [];
-        this.baseTexture = PIXI.BaseTexture.fromImage('/assets/micro_characters_bases/PNG/Human/human_regular_hair.png');
+        this.baseTexture = PIXI.BaseTexture.fromImage('assets/micro_characters_bases/PNG/Human/human_regular_hair.png');
 
         const tileW = 20;
         const tileH = 20;

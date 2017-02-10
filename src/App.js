@@ -22,7 +22,7 @@ const mapW = Math.ceil((640 + 640 / 2) / 32);
 const mapH = Math.ceil((360 + 360 / 2) / 32);
 
 const EMPTY_TILE = 40;
-const map = new Map('/assets/art_tileset.png', 256, 256, 32, 32, mapW, mapH, EMPTY_TILE);
+const map = new Map('assets/art_tileset.png', 256, 256, 32, 32, mapW, mapH, EMPTY_TILE);
 const character = new Character(map);
 
 // Routing
