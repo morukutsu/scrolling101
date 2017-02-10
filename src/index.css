@@ -23,6 +23,7 @@ code {
 
 a {
     user-select: none;
+    color: inherit;
 }
 
 a:hover {
@@ -33,6 +34,10 @@ a:hover {
 a:active {
     font-size: 24px;
     transition: all 0.05s ease;
+}
+
+a:visited {
+    color: inherit;
 }
 
 blockquote {

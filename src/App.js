@@ -75,11 +75,24 @@ const styles = {
         marginRight: 30,
         height: 40,
         width: 150,
-        display: 'inline-block'
+        display: 'inline-block',
+        textDecoration: 'none'
     },
 
     linesLink: {
         cursor: 'pointer'
+    },
+
+    summary: {
+        padding: 20
+    },
+
+    summaryLink: {
+        textDecoration: 'none'
+    },
+
+    current: {
+        color: '#008cff'
     }
 };
 
@@ -182,7 +195,7 @@ class App extends Component {
     }
 
     manageUrl(path) {
-        const prefix = process.env.NODE_ENV == "production" ? 'scrolling101/' : '';
+        const prefix = process.env.NODE_ENV === "production" ? 'scrolling101/' : '';
         const pattern = new RegExp('^' + prefix + '(\\d+)-');
 
         const matchs = path.match(pattern);
@@ -213,11 +226,15 @@ class App extends Component {
         update(character, map, globalComputeScrolling);
     }
 
-    changePage(id) {
+    getUrlForPage(id) {
+        const title = content[id][TITLE_CONTENT_ID].replace(/\s/g, '-');
+        const prefix = process.env.NODE_ENV === "production" ? "scrolling101/" : "";
+        return (prefix + id + "-" + title).toLowerCase();
+    }
+
+    changePage(id, e) {
         if (id < content.length) {
-            const title = content[id][TITLE_CONTENT_ID].replace(/\s/g, '-');
-            const prefix = process.env.NODE_ENV == "production" ? "scrolling101/" : "";
-            locationBar.update(prefix + id + "-" + title, {
+            locationBar.update(this.getUrlForPage(id), {
                 trigger: true
             });
         } else {
@@ -225,6 +242,8 @@ class App extends Component {
                 trigger: true
             });
         }
+
+        e.preventDefault();
     }
 
     render() {
@@ -240,6 +259,24 @@ class App extends Component {
             }
         }).process(mdString).contents;
 
+        const summary = content.map((page, index) => {
+            const title = page[TITLE_CONTENT_ID];
+            const activeStyle = globalCurrentPage === index ? styles.current : null;
+
+            return (
+                <div key={index}>
+                    <a
+                        key={index}
+                        href={this.getUrlForPage(index)}
+                        style={{...styles.summaryLink, ...activeStyle}}
+                        onClick={(e) => this.changePage(index, e)}
+                    >
+                        { title }
+                    </a>
+                </div>
+            );
+        });
+
         return (
             <div style={styles.outerContainer}>
                 <div style={styles.container}>
@@ -254,6 +291,10 @@ class App extends Component {
                             >
                                 Lines { linesEnabled ?  '☑' : '☐' }
                             </a>
+
+                            <div style={styles.summary}>
+                                { summary }
+                            </div>
                         </div>
                     </div>
 
@@ -266,7 +307,8 @@ class App extends Component {
                             this.state.currentPage > 0 ?
                             <a
                                 style={styles.next}
-                                onClick={() => this.changePage(this.state.currentPage - 1)}
+                                href={this.getUrlForPage(this.state.currentPage - 1)}
+                                onClick={(e) => this.changePage(this.state.currentPage - 1, e)}
                             >
                                 Previous
                             </a>
@@ -278,7 +320,8 @@ class App extends Component {
                             this.state.currentPage < content.length - 1 ?
                             <a
                                 style={styles.next}
-                                onClick={() => this.changePage(this.state.currentPage + 1)}
+                                href={this.getUrlForPage(this.state.currentPage + 1)}
+                                onClick={(e) => this.changePage(this.state.currentPage + 1, e)}
                             >
                                 Next
                             </a>
