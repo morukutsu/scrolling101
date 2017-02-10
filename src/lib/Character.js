@@ -114,6 +114,10 @@ export default class Character {
             this.vy = MAX_VY;
         }
 
+        if (this.map.isCollisionWithMapWall(this)) {
+            this.vx = 0;
+        }
+
         if (this.vy > 0 && this.map.isCollisionWithMapGround(this)) {
             this.vy = 0;
             this.isOnTheFloor = true;
@@ -122,10 +126,6 @@ export default class Character {
             this.y = Math.floor(this.y / 32) * 32 + this.h + 2;
         } else {
             this.isOnTheFloor = false;
-        }
-
-        if (this.map.isCollisionWithMapWall(this)) {
-            this.vx = 0;
         }
 
         // Out of bounds

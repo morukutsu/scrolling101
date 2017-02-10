@@ -182,7 +182,10 @@ class App extends Component {
     }
 
     manageUrl(path) {
-        const matchs = path.match(/^scrolling101\/(\d+)-/);
+        const prefix = process.env.NODE_ENV == "production" ? 'scrolling101/' : '';
+        const pattern = new RegExp('^' + prefix + '(\\d+)-');
+
+        const matchs = path.match(pattern);
         if (matchs) {
             const id = parseInt(matchs[1], 10);
             if (id < content.length) {
@@ -213,7 +216,8 @@ class App extends Component {
     changePage(id) {
         if (id < content.length) {
             const title = content[id][TITLE_CONTENT_ID].replace(/\s/g, '-');
-            locationBar.update("scrolling101/" + id + "-" + title, {
+            const prefix = process.env.NODE_ENV == "production" ? "scrolling101/" : "";
+            locationBar.update(prefix + id + "-" + title, {
                 trigger: true
             });
         } else {
