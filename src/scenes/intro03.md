@@ -9,6 +9,8 @@ A dead zone is a useful tool to prevent abrupt camera movements.
 In many situations, the player is focused on the elements very close to the character.
 The player does not necessarily want the camera to follow all his movements.
 
+For example, when jumping the camera will not scroll immediately, allowing the player to see the ground under.
+
 ## 2. Theory
 
 ### a. State machine
