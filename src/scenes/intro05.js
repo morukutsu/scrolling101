@@ -39,6 +39,7 @@ const easeOutQuad = (start, end, amount) => {
 
 let isInit = false;
 let scrollX, scrollY;
+let oldCharacterX, oldCharacterY;
 
 const scrollingFunctions = [
     (characterX, characterY) => {
@@ -50,13 +51,15 @@ const scrollingFunctions = [
             // Start with the camera centered on the character
             scrollX = targetX;
             scrollY = targetY;
-
             isInit = true;
         }
 
         // Smoothly, scrollX will transition to targetX. Same for Y.
-        scrollX = lerp(scrollX, targetX, 0.08);
-        scrollY = lerp(scrollY, targetY, 0.08);
+        scrollX = lerp(scrollX, targetX, 0.1);
+        scrollY = lerp(scrollY, targetY, 0.1);
+
+        oldCharacterX = characterX;
+        oldCharacterY = characterY;
 
         return {
             x: scrollX,
@@ -68,6 +71,39 @@ const scrollingFunctions = [
         return {
             x: 640 / 2 - characterX,
             y: 360 / 2 - characterY,
+        };
+    },
+
+    (characterX, characterY) => {
+        // Position to follow (centered camera)
+        const targetX = 640 / 2 - characterX;
+        const targetY = 360 / 2 - characterY;
+
+        if (!isInit) {
+            // Start with the camera centered on the character
+            scrollX = targetX;
+            scrollY = targetY;
+            oldCharacterX = characterX;
+            oldCharacterY = characterY;
+            isInit = true;
+        }
+
+        let offsetX = Math.sign(characterX - oldCharacterX) * 100;
+        const isMoving = Math.abs(oldCharacterX - characterX) >= 0.1;
+        if (!isMoving) {
+            offsetX = 0;
+        }
+
+        // Smoothly, scrollX will transition to targetX. Same for Y.
+        scrollX = lerp(scrollX, targetX - offsetX, 0.1);
+        scrollY = lerp(scrollY, targetY, 0.1);
+
+        oldCharacterX = characterX;
+        oldCharacterY = characterY;
+
+        return {
+            x: scrollX,
+            y: scrollY,
         };
     },
 ];

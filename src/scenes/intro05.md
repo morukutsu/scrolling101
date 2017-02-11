@@ -43,8 +43,8 @@ const computeScrolling = (characterX, characterY) => {
     }
 
     // Smoothly, scrollX will transition to targetX. Same for Y.
-    scrollX = lerp(scrollX, targetX, 0.08);
-    scrollY = lerp(scrollY, targetY, 0.08);
+    scrollX = lerp(scrollX, targetX, 0.1);
+    scrollY = lerp(scrollY, targetY, 0.1);
 
     return {
         x: scrollX,
