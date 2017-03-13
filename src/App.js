@@ -36,7 +36,7 @@ const styles = {
 
     container: {
         flexDirection: 'row',
-        display: 'inline-block',
+        display: 'flex',
     },
 
     gameArea: {
@@ -49,17 +49,21 @@ const styles = {
     },
 
     game: {
-        position: 'fixed',
+        //position: 'absolute',
         minHeight: 0,
+        marginRight: 0,
+        marginLeft: 5
     },
 
     article: {
-        paddingTop: 32,
-        paddingLeft: 680,
+        paddingLeft: 32,
         color: '#333',
-        width: 770,
         minHeight: 0,
         textAlign: 'left',
+        overflowY: 'auto',
+        maxHeight: '100vh',
+        paddingRight: 32,
+        minWidth: 500,
     },
 
     play: {
@@ -218,7 +222,11 @@ class App extends Component {
             currentPage: globalCurrentPage
         });
 
-        window.scrollTo(0, 0);
+        //window.scrollTo(0, 0);
+        let elem = document.getElementById('article');
+        if (elem) {
+            elem.scrollTop = 0;
+        }
     }
 
     gameUpdate() {
@@ -298,7 +306,7 @@ class App extends Component {
                         </div>
                     </div>
 
-                    <div style={styles.article}>
+                    <div style={styles.article} id="article">
                         <div key={Math.random()}>
                             { mdContent }
                         </div>
